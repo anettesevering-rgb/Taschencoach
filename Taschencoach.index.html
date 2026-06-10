@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///C:/Users/anett/Downloads/taschencoach%20(1).html -->
+<html lang="de"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Taschencoach">
+<meta name="theme-color" content="#F5EFE4">
+<title>Taschencoach</title>
+<style>
+  :root{
+    --bg:#F5EFE4; --card:#FCF8EF; --ink:#3A332B; --muted:#8B8273;
+    --line:#E2D9C8; --terra:#B5502F; --olive:#76763C; --mustard:#C99A2E;
+    --green:#5E7A4A; --red:#A8402F; --yellow:#C99A2E;
+    --mono:ui-monospace,'SF Mono','Cascadia Mono','Roboto Mono',Menlo,monospace;
+    --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--mono);font-size:14px;line-height:1.5;padding:16px;max-width:1100px;margin:0 auto}
+  h1{font-family:var(--serif);font-style:italic;font-weight:600;font-size:26px;letter-spacing:.5px}
+  .topbar{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{border:1px solid var(--line);background:var(--card);padding:5px 12px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+  .pill b{color:var(--ink);letter-spacing:1px}
+  nav{display:flex;gap:22px;border-bottom:1px solid var(--line);margin-bottom:18px;flex-wrap:wrap}
+  nav button{background:none;border:none;font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:10px 2px;cursor:pointer;border-bottom:2px solid transparent}
+  nav button.active{color:var(--terra);border-bottom-color:var(--terra)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--olive);padding:18px}
+  .card.t-terra{border-top-color:var(--terra)}
+  .card.t-mustard{border-top-color:var(--mustard)}
+  .card.t-plum{border-top-color:#7A4A5E}
+  .card h2{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--olive);border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:14px}
+  .card.t-terra h2{color:var(--terra)}
+  .card.t-mustard h2{color:var(--mustard)}
+  .card.t-plum h2{color:#7A4A5E}
+  label{display:block;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin:12px 0 5px}
+  label:first-of-type{margin-top:0}
+  input[type=number],input[type=date],select{width:100%;border:1px solid var(--line);background:var(--bg);font-family:var(--mono);font-size:14px;padding:9px 10px;color:var(--ink)}
+  input:focus,select:focus,button:focus-visible{outline:2px solid var(--mustard);outline-offset:1px}
+  .scale{display:flex;gap:4px;flex-wrap:wrap}
+  .scale button{flex:1;min-width:26px;border:1px solid var(--line);background:var(--bg);font-family:var(--mono);font-size:12px;padding:7px 0;cursor:pointer;color:var(--ink)}
+  .scale button.sel{background:var(--terra);border-color:var(--terra);color:#FCF8EF}
+  .seg{display:flex;gap:6px}
+  .seg button{flex:1;border:1px solid var(--line);background:var(--bg);font-family:var(--mono);font-size:11px;letter-spacing:1px;padding:9px 4px;cursor:pointer;text-transform:uppercase;color:var(--ink)}
+  .seg button.sel-keto{background:var(--olive);border-color:var(--olive);color:#FCF8EF}
+  .seg button.sel-carb{background:var(--mustard);border-color:var(--mustard);color:#FCF8EF}
+  .btn{display:inline-block;border:1px solid var(--ink);background:var(--ink);color:#FCF8EF;font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:12px 20px;cursor:pointer;margin-top:16px}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn:hover{opacity:.85}
+  /* Tagesbefehl */
+  .befehl{border:1px solid var(--line);border-left:6px solid var(--muted);background:var(--card);padding:22px 24px;margin-bottom:16px}
+  .befehl .tag{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .befehl .order{font-family:var(--serif);font-style:italic;font-size:26px;line-height:1.25;margin-bottom:10px}
+  .befehl .why{font-size:12.5px;color:var(--muted)}
+  .befehl.gruen{border-left-color:var(--green)} .befehl.gruen .order{color:var(--green)}
+  .befehl.gelb{border-left-color:var(--yellow)} .befehl.gelb .order{color:#9A7415}
+  .befehl.rot{border-left-color:var(--red)} .befehl.rot .order{color:var(--red)}
+  .bignum{font-family:var(--serif);font-style:italic;font-size:34px;text-align:center}
+  .subnum{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:2px}
+  .dashed{border:1px dashed var(--muted);padding:14px;margin-top:14px;text-align:center}
+  .progress{height:8px;background:var(--bg);border:1px solid var(--line);margin-top:8px;position:relative}
+  .progress>div{height:100%;background:var(--olive)}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+  td{padding:8px 6px;border-bottom:1px solid var(--line)}
+  td.del{color:var(--red);cursor:pointer;text-align:right}
+  .spark{width:100%;height:60px;margin-top:6px}
+  .note{font-size:12px;color:var(--muted);margin-top:10px}
+  .rule{font-size:12.5px;padding:8px 0;border-bottom:1px dashed var(--line)}
+  .rule b{color:var(--terra)}
+  .hidden{display:none}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ampel{display:flex;gap:6px;margin-top:4px}
+  .ampel button{flex:1;border:1px solid var(--line);background:var(--bg);font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:8px 2px;cursor:pointer}
+  .ampel button.sel-rot{background:var(--red);color:#fff;border-color:var(--red)}
+  .ampel button.sel-gelb{background:var(--yellow);color:#fff;border-color:var(--yellow)}
+  .ampel button.sel-gruen{background:var(--green);color:#fff;border-color:var(--green)}
+  @media (prefers-reduced-motion:no-preference){.befehl{transition:border-color .3s}}
+  @media (max-width:600px){body{padding:10px}.befehl .order{font-size:21px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>Taschencoach</h1>
+  <div class="pills">
+    <span class="pill">Phase: <b id="pillPhase">1 · HRV-Reha</b></span>
+    <span class="pill">HRV 7T: <b id="pillHrv">–</b></span>
+    <span class="pill">Gewicht 7T: <b id="pillWeight">–</b></span>
+    <span class="pill">Einträge: <b id="pillCount">0</b></span>
+  </div>
+</div>
+
+<nav>
+  <button class="active" data-tab="heute">Heute</button>
+  <button data-tab="phase">Phase</button>
+  <button data-tab="trends">Trends</button>
+  <button data-tab="keto">Keto-Experiment</button>
+  <button data-tab="daten">Daten</button>
+</nav>
+
+<!-- ===== HEUTE ===== -->
+<section id="tab-heute">
+  <div class="befehl" id="befehlBox">
+    <div class="tag" id="befehlTag">Tagesbefehl</div>
+    <div class="order" id="befehlOrder">Morgendaten eingeben, dann gibt es den Befehl.</div>
+    <div class="why" id="befehlWhy"></div>
+  </div>
+
+  <div class="grid">
+    <div class="card t-terra">
+      <h2>01 · Morgen-Check-in</h2>
+      <label for="inDate">Datum</label>
+      <input type="date" id="inDate">
+      <div class="row2">
+        <div><label for="inHrv">HRV ms</label><input type="number" id="inHrv" step="1" placeholder="z.B. 32"></div>
+        <div><label for="inRec">Recovery %</label><input type="number" id="inRec" step="1" placeholder="z.B. 44"></div>
+      </div>
+      <label>Whoop-Farbe</label>
+      <div class="ampel" id="ampel">
+        <button data-c="rot">Rot 0–33</button>
+        <button data-c="gelb">Gelb 34–66</button>
+        <button data-c="gruen">Grün 67–100</button>
+      </div>
+      <div class="row2">
+        <div><label for="inSleep">Schlaf h</label><input type="number" id="inSleep" step="0.1" placeholder="z.B. 7.5"></div>
+        <div><label for="inRhr">RHR bpm</label><input type="number" id="inRhr" step="1" placeholder="z.B. 60"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>02 · Körper &amp; Stoffwechsel</h2>
+      <label for="inWeight">Gewicht kg, nüchtern</label>
+      <input type="number" id="inWeight" step="0.1" placeholder="z.B. 62.9">
+      <div class="row2">
+        <div><label for="inKet">Blutketone mmol/L</label><input type="number" id="inKet" step="0.1" placeholder="optional"></div>
+        <div><label for="inGlu">Glucose mg/dL</label><input type="number" id="inGlu" step="1" placeholder="optional"></div>
+      </div>
+      <label>Ernährung heute</label>
+      <div class="seg" id="dietSeg">
+        <button data-d="keto" class="sel-keto">Keto</button>
+        <button data-d="carb">Carb-Test</button>
+      </div>
+      <div class="dashed">
+        <div class="bignum" id="proteinNum">–</div>
+        <div class="subnum">Protein-Ziel g/Tag (1.8–2.2 g/kg)</div>
+      </div>
+    </div>
+
+    <div class="card t-plum">
+      <h2>03 · Subjektiv</h2>
+      <label>Erholung · 1 erschöpft, 10 frisch</label>
+      <div class="scale" id="scaleSubj"><button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button><button data-v="6">6</button><button data-v="7">7</button><button data-v="8">8</button><button data-v="9">9</button><button data-v="10">10</button></div>
+      <label style="margin-top:16px">Gestern trainiert?</label>
+      <div class="seg" id="trainedSeg">
+        <button data-t="nein">Nein / Ruhe</button>
+        <button data-t="leicht">Leicht</button>
+        <button data-t="hart">Hart</button>
+      </div>
+      <button class="btn" id="saveBtn">Befehl abrufen &amp; speichern</button>
+      <div class="note" id="saveNote"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PHASE ===== -->
+<section id="tab-phase" class="hidden">
+  <div class="grid">
+    <div class="card t-terra">
+      <h2>Aktuelle Phase</h2>
+      <div class="dashed">
+        <div class="bignum" id="phaseBig">1</div>
+        <div class="subnum" id="phaseName">HRV-Reha</div>
+      </div>
+      <label style="margin-top:16px">Phase manuell setzen</label>
+      <select id="phaseSelect">
+        <option value="1">Phase 1 · HRV-Reha</option>
+        <option value="2">Phase 2 · Rekomposition</option>
+        <option value="3">Phase 3 · VO2max</option>
+      </select>
+      <div class="note" id="phaseAdvice">Wechsel erst, wenn das Exit-Kriterium steht.</div>
+    </div>
+
+    <div class="card">
+      <h2>Exit-Kriterium Phase 1</h2>
+      <div class="note">HRV-7-Tage-Schnitt muss über <b>40 ms</b> liegen, RHR-Trend fallend.</div>
+      <div class="dashed">
+        <div class="bignum" id="exitHrv">–</div>
+        <div class="subnum">HRV 7-Tage-Schnitt / Ziel 40</div>
+        <div class="progress"><div id="exitBar" style="width:0%"></div></div>
+      </div>
+      <div class="note" id="exitVerdict">Noch keine HRV-Daten.</div>
+    </div>
+
+    <div class="card t-mustard">
+      <h2>Regeln der Phase</h2>
+      <div id="phaseRules"><div class="rule"><b>Kein Defizit.</b> Erhaltungskalorien. Das Gewicht wartet.</div><div class="rule"><b>Kraft 3×/Wo</b>, RPE ≤7, keine Grinder-Sätze.</div><div class="rule"><b>Zone 2: 2×/Wo</b> 30–45 min, Gesprächstempo.</div><div class="rule"><b>HIIT gesperrt</b> bis HRV-7T-Schnitt &gt;40.</div><div class="rule"><b>Elektrolyte:</b> Na 3–5 g, Mg abends. Schlaffenster halten.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRENDS ===== -->
+<section id="tab-trends" class="hidden">
+  <div class="grid">
+    <div class="card t-terra"><h2>HRV · 7-Tage-Schnitt</h2><svg class="spark" id="sparkHrv" viewBox="0 0 300 60" preserveAspectRatio="none"><text x="10" y="35" font-size="11" fill="#8B8273">Zu wenig Daten</text></svg><div class="note" id="noteHrv">Aktuell: – ms (7T). Ziel: stabil über 40.</div></div>
+    <div class="card"><h2>Gewicht · 7-Tage-Schnitt</h2><svg class="spark" id="sparkWeight" viewBox="0 0 300 60" preserveAspectRatio="none"><text x="10" y="35" font-size="11" fill="#8B8273">Zu wenig Daten</text></svg><div class="note" id="noteWeight"></div></div>
+    <div class="card t-mustard"><h2>RHR · Verlauf</h2><svg class="spark" id="sparkRhr" viewBox="0 0 300 60" preserveAspectRatio="none"><text x="10" y="35" font-size="11" fill="#8B8273">Zu wenig Daten</text></svg><div class="note" id="noteRhr"></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h2>Stop-Regel-Wächter</h2><div class="note" id="stopWatch">Zu wenig Daten für den Wächter (braucht ≥14 HRV-Einträge).</div></div>
+</section>
+
+<!-- ===== KETO ===== -->
+<section id="tab-keto" class="hidden">
+  <div class="grid">
+    <div class="card t-terra">
+      <h2>N=1: Killt Ketose deine HRV?</h2>
+      <div class="note">Jeder Eintrag wird als Keto- oder Carb-Tag markiert (Check-in, Karte 02). Hier der Vergleich der HRV-Mittelwerte. Mindestens 10 Tage pro Arm, sonst ist es Rauschen.</div>
+      <div class="dashed"><div class="bignum" id="ketoHrv">–</div><div class="subnum" id="ketoDays">Keto-Tage: 0 · HRV-Schnitt ms</div></div>
+      <div class="dashed"><div class="bignum" id="carbHrv">–</div><div class="subnum" id="carbDays">Carb-Tage: 0 · HRV-Schnitt ms</div></div>
+    </div>
+    <div class="card t-mustard">
+      <h2>Urteil</h2>
+      <div class="note" id="ketoVerdict">Noch keine ausreichenden Daten (je ≥10 Tage pro Arm nötig).</div>
+      <div class="rule" style="margin-top:12px"><b>Protokoll:</b> Phase 1 in Ketose bleiben. Steigt die HRV nach 3–4 Wochen Trainingsreduktion nicht → 2 Wochen Carb-Test (100–150 g, ums Training gelegt). Schnitte vergleichen.</div>
+      <div class="rule"><b>Vorher prüfen:</b> Natrium 3–5 g/Tag, Magnesium abends. Elektrolytmangel imitiert den Keto-HRV-Effekt.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DATEN ===== -->
+<section id="tab-daten" class="hidden">
+  <div class="card">
+    <h2>Verlauf</h2>
+    <div style="overflow-x:auto"><table id="logTable">
+      <thead><tr><th>Datum</th><th>HRV</th><th>Rec%</th><th>RHR</th><th>Schlaf</th><th>kg</th><th>Ket</th><th>Diät</th><th>Befehl</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <button class="btn ghost" id="exportBtn">JSON exportieren</button>
+    <button class="btn ghost" id="importBtn">JSON importieren</button>
+    <input type="file" id="importFile" accept=".json" class="hidden">
+    <div class="note">Backup-Disziplin wie beim Tracker: nach jedem Eintrag exportieren, wenn die App im Browser-Sandbox läuft. Lokal gespeichert wird automatisch, wo möglich.</div>
+  </div>
+</section>
+
+<script>
+(function(){
+"use strict";
+// ---------- State ----------
+var state = { entries: [], phase: 1 };
+var KEY = "taschencoach_v1";
+function loadLocal(){ try{ var raw = localStorage.getItem(KEY); if(raw){ state = JSON.parse(raw); } }catch(e){} }
+function saveLocal(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+loadLocal();
+
+// ---------- Helpers ----------
+function byDate(a,b){ return a.date < b.date ? -1 : 1; }
+function sorted(){ return state.entries.slice().sort(byDate); }
+function lastN(field, n){
+  var arr = sorted().filter(function(e){ return e[field] != null && e[field] !== ""; });
+  return arr.slice(-n).map(function(e){ return Number(e[field]); });
+}
+function avg(a){ if(!a.length) return null; return a.reduce(function(s,x){return s+x;},0)/a.length; }
+function fmt(x,d){ return x==null ? "–" : x.toFixed(d==null?1:d); }
+function todayISO(){ var d=new Date(); var m=("0"+(d.getMonth()+1)).slice(-2), dd=("0"+d.getDate()).slice(-2); return d.getFullYear()+"-"+m+"-"+dd; }
+
+// ---------- Decision Engine ----------
+function decide(e){
+  var hrv7 = avg(lastN("hrv",7));
+  var baseline = hrv7 || e.hrv;
+  var reasons = [];
+  var level = "gruen";
+
+  var hrvLow = e.hrv != null && baseline && e.hrv < 0.85*baseline;
+  var hrvVeryLow = e.hrv != null && e.hrv < 30;
+  var sleepBad = e.sleep != null && e.sleep < 6.5;
+  var subjBad = e.subj != null && e.subj <= 4;
+
+  if(e.color === "rot" || hrvVeryLow || (hrvLow && sleepBad)){
+    level = "rot";
+    if(e.color==="rot") reasons.push("Recovery rot");
+    if(hrvVeryLow) reasons.push("HRV "+e.hrv+" ms — Keller");
+    if(hrvLow) reasons.push("HRV >15% unter 7T-Schnitt");
+    if(sleepBad) reasons.push("Schlaf <6.5 h");
+  } else if(e.color === "gelb" || hrvLow || sleepBad || subjBad || e.trained === "hart"){
+    level = "gelb";
+    if(e.color==="gelb") reasons.push("Recovery gelb");
+    if(hrvLow) reasons.push("HRV unter Baseline");
+    if(sleepBad) reasons.push("Schlaf kurz");
+    if(subjBad) reasons.push("subjektiv platt");
+    if(e.trained==="hart") reasons.push("gestern hart trainiert");
+  } else {
+    reasons.push("alle Marker im Rahmen");
+  }
+
+  var order, why;
+  var p = state.phase;
+  if(level === "rot"){
+    order = "Ruhetag. Spaziergang mit Hund, Resonanzatmung 2×, früh ins Bett.";
+  } else if(level === "gelb"){
+    order = p===3 ? "Zone 2, 40–50 min. Keine Intervalle heute."
+                  : "Kraft RPE ≤6 technisch ODER Zone 2, 35–45 min. Nichts Schweres.";
+  } else {
+    if(p===1) order = "Kraft 3er-Split, RPE ≤7, keine Grinder. Optional Zone 2 als Abschluss.";
+    else if(p===2) order = "Kraft schwer, Grundübungen, RPE 7–8. Protein-Ziel heute treffen.";
+    else order = "Intervalltag möglich: 4×4 min @ 90–95% HFmax, 3 min Trab dazwischen.";
+  }
+  why = reasons.join(" · ") + " — Phase " + p + (p===1 ? " (HIIT gesperrt bis HRV-7T >40)" : "");
+  return { level: level, order: order, why: why };
+}
+
+// ---------- UI: Tabs ----------
+document.querySelectorAll("nav button").forEach(function(b){
+  b.addEventListener("click", function(){
+    document.querySelectorAll("nav button").forEach(function(x){x.classList.remove("active");});
+    b.classList.add("active");
+    ["heute","phase","trends","keto","daten"].forEach(function(t){
+      document.getElementById("tab-"+t).classList.toggle("hidden", t !== b.dataset.tab);
+    });
+    renderAll();
+  });
+});
+
+// ---------- UI: Check-in widgets ----------
+var sel = { color:null, diet:"keto", subj:null, trained:null };
+
+var scaleBox = document.getElementById("scaleSubj");
+for(var i=1;i<=10;i++){
+  var btn=document.createElement("button"); btn.textContent=i; btn.dataset.v=i;
+  btn.addEventListener("click", function(){ sel.subj=Number(this.dataset.v); scaleBox.querySelectorAll("button").forEach(function(x){x.classList.remove("sel");}); this.classList.add("sel"); });
+  scaleBox.appendChild(btn);
+}
+document.getElementById("ampel").querySelectorAll("button").forEach(function(b){
+  b.addEventListener("click", function(){
+    sel.color=b.dataset.c;
+    document.getElementById("ampel").querySelectorAll("button").forEach(function(x){x.className="";});
+    b.className="sel-"+b.dataset.c;
+  });
+});
+document.getElementById("dietSeg").querySelectorAll("button").forEach(function(b){
+  b.addEventListener("click", function(){
+    sel.diet=b.dataset.d;
+    document.getElementById("dietSeg").querySelectorAll("button").forEach(function(x){x.className="";});
+    b.className = b.dataset.d==="keto" ? "sel-keto" : "sel-carb";
+  });
+});
+document.getElementById("trainedSeg").querySelectorAll("button").forEach(function(b){
+  b.addEventListener("click", function(){
+    sel.trained=b.dataset.t;
+    document.getElementById("trainedSeg").querySelectorAll("button").forEach(function(x){x.className="";});
+    b.className="sel-keto";
+  });
+});
+// default diet = keto visually
+document.getElementById("dietSeg").querySelector('[data-d="keto"]').className="sel-keto";
+document.getElementById("inDate").value = todayISO();
+
+// ---------- Save entry ----------
+function num(id){ var v=document.getElementById(id).value; return v==="" ? null : Number(v); }
+document.getElementById("saveBtn").addEventListener("click", function(){
+  var e = {
+    date: document.getElementById("inDate").value || todayISO(),
+    hrv: num("inHrv"), rec: num("inRec"), rhr: num("inRhr"),
+    sleep: num("inSleep"), weight: num("inWeight"),
+    ketone: num("inKet"), glucose: num("inGlu"),
+    color: sel.color, diet: sel.diet, subj: sel.subj, trained: sel.trained
+  };
+  if(e.hrv==null && e.weight==null){ document.getElementById("saveNote").textContent="Mindestens HRV oder Gewicht eingeben."; return; }
+  // replace same-date entry
+  state.entries = state.entries.filter(function(x){ return x.date !== e.date; });
+  var d = decide(e);
+  e.befehl = d.level;
+  state.entries.push(e);
+  saveLocal();
+  showBefehl(d, e.date);
+  document.getElementById("saveNote").textContent = "Gespeichert: " + e.date + ". Backup nicht vergessen (Tab Daten).";
+  renderAll();
+});
+
+function showBefehl(d, date){
+  var box=document.getElementById("befehlBox");
+  box.className = "befehl " + d.level;
+  document.getElementById("befehlTag").textContent = "Tagesbefehl · " + date + " · " + d.level.toUpperCase();
+  document.getElementById("befehlOrder").textContent = d.order;
+  document.getElementById("befehlWhy").textContent = d.why;
+}
+
+// ---------- Phase ----------
+var phaseNames = {1:"HRV-Reha",2:"Rekomposition",3:"VO2max"};
+var phaseRules = {
+ 1:['<div class="rule"><b>Kein Defizit.</b> Erhaltungskalorien. Das Gewicht wartet.</div>',
+    '<div class="rule"><b>Kraft 3×/Wo</b>, RPE ≤7, keine Grinder-Sätze.</div>',
+    '<div class="rule"><b>Zone 2: 2×/Wo</b> 30–45 min, Gesprächstempo.</div>',
+    '<div class="rule"><b>HIIT gesperrt</b> bis HRV-7T-Schnitt >40.</div>',
+    '<div class="rule"><b>Elektrolyte:</b> Na 3–5 g, Mg abends. Schlaffenster halten.</div>'],
+ 2:['<div class="rule"><b>Defizit −300 bis −400 kcal</b> → ~0,25 kg/Wo. Nicht mehr.</div>',
+    '<div class="rule"><b>Protein 1,8–2,2 g/kg</b> — siehe Tagesziel, nicht verhandelbar.</div>',
+    '<div class="rule"><b>Kraft 3× schwer</b>, Grundübungen, Volumen moderat. Zone 2 weiter.</div>',
+    '<div class="rule"><b>Stop-Regel:</b> HRV-Schnitt fällt 2 Wochen → Defizit pausieren, 1 Wo Erhaltung.</div>'],
+ 3:['<div class="rule"><b>Defizit beendet.</b> VO2max im Defizit ist Geldverbrennung.</div>',
+    '<div class="rule"><b>4×4-Intervalle</b> @90–95% HFmax, 1–2×/Wo, nur bei grünem Befehl.</div>',
+    '<div class="rule"><b>Rest polarisiert:</b> viel Zone 2, wenig Mitte.</div>',
+    '<div class="rule"><b>Kraft 2×/Wo</b> Erhalt.</div>']
+};
+document.getElementById("phaseSelect").addEventListener("change", function(){
+  state.phase = Number(this.value); saveLocal(); renderAll();
+});
+
+// ---------- Sparkline ----------
+function spark(svgId, values, color){
+  var svg=document.getElementById(svgId); svg.innerHTML="";
+  if(values.length<2){ svg.innerHTML='<text x="10" y="35" font-size="11" fill="#8B8273">Zu wenig Daten</text>'; return; }
+  var min=Math.min.apply(null,values), max=Math.max.apply(null,values);
+  if(max===min){max=min+1;}
+  var pts=values.map(function(v,i){
+    var x = 6 + i*(288/(values.length-1));
+    var y = 52 - (v-min)/(max-min)*44;
+    return x.toFixed(1)+","+y.toFixed(1);
+  }).join(" ");
+  svg.innerHTML='<polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="2"/>' +
+    '<text x="6" y="12" font-size="10" fill="#8B8273">max '+max.toFixed(1)+'</text>' +
+    '<text x="6" y="58" font-size="10" fill="#8B8273">min '+min.toFixed(1)+'</text>';
+}
+function rolling7(field){
+  var arr = sorted().filter(function(e){return e[field]!=null;});
+  var out=[];
+  for(var i=0;i<arr.length;i++){
+    var win=arr.slice(Math.max(0,i-6), i+1).map(function(e){return Number(e[field]);});
+    out.push(avg(win));
+  }
+  return out;
+}
+
+// ---------- Render ----------
+function renderAll(){
+  var hrv7=avg(lastN("hrv",7)), w7=avg(lastN("weight",7));
+  document.getElementById("pillPhase").textContent = state.phase + " · " + phaseNames[state.phase];
+  document.getElementById("pillHrv").textContent = fmt(hrv7,0) + (hrv7?" ms":"");
+  document.getElementById("pillWeight").textContent = fmt(w7,1) + (w7?" kg":"");
+  document.getElementById("pillCount").textContent = state.entries.length;
+
+  // Protein
+  document.getElementById("proteinNum").textContent = w7 ? Math.round(w7*1.8)+"–"+Math.round(w7*2.2) : "–";
+
+  // Phase tab
+  document.getElementById("phaseBig").textContent = state.phase;
+  document.getElementById("phaseName").textContent = phaseNames[state.phase];
+  document.getElementById("phaseSelect").value = state.phase;
+  document.getElementById("phaseRules").innerHTML = phaseRules[state.phase].join("");
+  document.getElementById("exitHrv").textContent = fmt(hrv7,0);
+  var pct = hrv7 ? Math.min(100, hrv7/40*100) : 0;
+  document.getElementById("exitBar").style.width = pct+"%";
+  document.getElementById("exitVerdict").textContent =
+    !hrv7 ? "Noch keine HRV-Daten." :
+    hrv7 >= 40 ? "Kriterium erfüllt. Phase 2 freigegeben — RHR-Trend gegenchecken." :
+    "Noch " + (40-hrv7).toFixed(0) + " ms bis zur Freigabe. Geduld ist hier Training.";
+  document.getElementById("phaseAdvice").textContent =
+    state.phase===1 ? "Wechsel erst, wenn das Exit-Kriterium steht." :
+    state.phase===2 ? "Ziel: −2 bis −3 kg in 8–12 Wochen. Waage wöchentlich bewerten, nicht täglich." :
+    "Intervalle nur an grünen Tagen.";
+
+  // Trends
+  spark("sparkHrv", rolling7("hrv"), "#B5502F");
+  spark("sparkWeight", rolling7("weight"), "#76763C");
+  spark("sparkRhr", lastN("rhr", 60), "#C99A2E");
+  document.getElementById("noteHrv").textContent = "Aktuell: " + fmt(hrv7,1) + " ms (7T). Ziel: stabil über 40.";
+  document.getElementById("noteWeight").textContent = w7 ? "Aktuell: " + fmt(w7,1) + " kg (7T)." : "";
+  var rhr7 = avg(lastN("rhr",7)), rhrPrev = avg(lastN("rhr",14).slice(0,7));
+  document.getElementById("noteRhr").textContent = (rhr7 && rhrPrev) ? ("7T: "+fmt(rhr7,0)+" bpm · Vorwoche: "+fmt(rhrPrev,0)+" bpm · "+(rhr7<rhrPrev?"fallend ✓":"nicht fallend")) : "";
+
+  // Stop-Regel-Wächter
+  var h = rolling7("hrv");
+  var watch = "Zu wenig Daten für den Wächter (braucht ≥14 HRV-Einträge).";
+  if(h.length>=14){
+    var thisW = avg(h.slice(-7)), lastW = avg(h.slice(-14,-7));
+    if(state.phase===2 && thisW < lastW){
+      watch = "WARNUNG: HRV-Schnitt fällt (Woche "+fmt(thisW,1)+" vs. "+fmt(lastW,1)+"). Fällt er nächste Woche wieder → Defizit pausieren.";
+    } else {
+      watch = "Kein Alarm. Diese Woche " + fmt(thisW,1) + " ms vs. Vorwoche " + fmt(lastW,1) + " ms.";
+    }
+  }
+  document.getElementById("stopWatch").textContent = watch;
+
+  // Keto
+  var ketoVals = sorted().filter(function(e){return e.diet==="keto" && e.hrv!=null;}).map(function(e){return e.hrv;});
+  var carbVals = sorted().filter(function(e){return e.diet==="carb" && e.hrv!=null;}).map(function(e){return e.hrv;});
+  document.getElementById("ketoHrv").textContent = fmt(avg(ketoVals),1);
+  document.getElementById("carbHrv").textContent = fmt(avg(carbVals),1);
+  document.getElementById("ketoDays").textContent = "Keto-Tage: " + ketoVals.length + " · HRV-Schnitt ms";
+  document.getElementById("carbDays").textContent = "Carb-Tage: " + carbVals.length + " · HRV-Schnitt ms";
+  var kv = document.getElementById("ketoVerdict");
+  if(ketoVals.length>=10 && carbVals.length>=10){
+    var diff = avg(carbVals)-avg(ketoVals);
+    kv.textContent = diff > 4 ? "Carb-Tage liegen " + diff.toFixed(1) + " ms höher. Das spricht gegen strikte Ketose während Belastungsphasen — Targeted Carbs erwägen."
+      : diff < -4 ? "Keto-Tage liegen höher. Ketose ist bei dir kein HRV-Killer. Bleiben."
+      : "Unterschied " + diff.toFixed(1) + " ms — praktisch null. Ernährungsform nach Präferenz wählen, nicht nach HRV.";
+  } else {
+    kv.textContent = "Noch keine ausreichenden Daten (je ≥10 Tage pro Arm nötig).";
+  }
+
+  // Table
+  var tb = document.querySelector("#logTable tbody"); tb.innerHTML="";
+  sorted().slice().reverse().forEach(function(e){
+    var tr=document.createElement("tr");
+    tr.innerHTML = "<td>"+e.date+"</td><td>"+(e.hrv==null?"–":e.hrv)+"</td><td>"+(e.rec==null?"–":e.rec)+"</td><td>"+(e.rhr==null?"–":e.rhr)+"</td><td>"+(e.sleep==null?"–":e.sleep)+"</td><td>"+(e.weight==null?"–":e.weight)+"</td><td>"+(e.ketone==null?"–":e.ketone)+"</td><td>"+(e.diet||"–")+"</td><td>"+(e.befehl||"–")+"</td><td class='del' data-date='"+e.date+"'>×</td>";
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll(".del").forEach(function(td){
+    td.addEventListener("click", function(){
+      state.entries = state.entries.filter(function(x){return x.date!==td.dataset.date;});
+      saveLocal(); renderAll();
+    });
+  });
+}
+
+// ---------- Export / Import ----------
+document.getElementById("exportBtn").addEventListener("click", function(){
+  var blob = new Blob([JSON.stringify(state,null,2)], {type:"application/json"});
+  var a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="taschencoach_backup_"+todayISO()+".json"; a.click();
+});
+document.getElementById("importBtn").addEventListener("click", function(){ document.getElementById("importFile").click(); });
+document.getElementById("importFile").addEventListener("change", function(ev){
+  var f=ev.target.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(){ try{ var d=JSON.parse(r.result); if(d && d.entries){ state=d; saveLocal(); renderAll(); } }catch(e){ alert("Datei nicht lesbar."); } };
+  r.readAsText(f);
+});
+
+renderAll();
+})();
+</script>
+
+
+</body></html>
